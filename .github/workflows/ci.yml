@@ -1,0 +1,37 @@
+name: MERN DevOps Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Backend Dependencies
+        run: |
+          cd TODO/todo_backend
+          npm install
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd TODO/todo_frontend
+          npm install
+
+      - name: Build Docker Backend Image
+        run: docker build -t todo-backend ./TODO/todo_backend
+
+      - name: Build Docker Frontend Image
+        run: docker build -t todo-frontend ./TODO/todo_frontend
